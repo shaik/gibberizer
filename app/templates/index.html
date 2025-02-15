@@ -12,12 +12,18 @@
         <label for="file">Select a source text file:</label>
         <select name="file" id="file">
             {% for filename in files %}
-                <option value="{{ filename }}">{{ filename }}</option>
+                <option value="{{ filename }}" {% if filename == selected_file %}selected{% endif %}>{{ filename }}</option>
             {% endfor %}
         </select>
         <br>
+        <label for="min_chunk_size">Minimum Chunk Size:</label>
+        <input type="number" name="min_chunk_size" id="min_chunk_size" min="2" max="10" value="{{ min_chunk_size or 3 }}" required>
+        <br>
+        <label for="max_chunk_size">Maximum Chunk Size:</label>
+        <input type="number" name="max_chunk_size" id="max_chunk_size" min="2" max="10" value="{{ max_chunk_size or 3 }}" required>
+        <br>
         <label for="word_count">Number of words to generate:</label>
-        <input type="number" name="word_count" id="word_count" min="1" value="100" required>
+        <input type="number" name="word_count" id="word_count" min="1" max="1000" value="{{ word_count or 100 }}" required>
         <br>
         <input type="submit" value="Generate Gibberish">
     </form>

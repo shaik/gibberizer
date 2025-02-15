@@ -75,16 +75,22 @@ def index():
 def generate():
     selected_file = request.form["file"]
     word_count = int(request.form["word_count"])
+    word_count = min(word_count, 1000)
+    min_chunk_size = int(request.form.get("min_chunk_size", 3))
+    max_chunk_size = int(request.form.get("max_chunk_size", 3))
+
+    if min_chunk_size > max_chunk_size:
+        min_chunk_size, max_chunk_size = max_chunk_size, min_chunk_size
+
     reader = get_reader(data_dir=str(Path(current_app.root_path).parent / "data"))
     text = reader.read_text(selected_file)
-    generator = create_generator()
+    generator = create_generator(min_chunk_size=min_chunk_size, max_chunk_size=max_chunk_size)
     gibberish = generator.generate(text)
 
-    # Truncate gibberish to the specified word count
     words = gibberish.split()
     if len(words) > word_count:
         gibberish = " ".join(words[:word_count])
 
     data_dir = Path(current_app.root_path).parent / "data"
     files = [f.name for f in data_dir.glob("*.txt")]
-    return render_template("index.html", files=files, gibberish=gibberish)
+    return render_template("index.html", files=files, gibberish=gibberish, selected_file=selected_file, word_count=word_count, min_chunk_size=min_chunk_size, max_chunk_size=max_chunk_size)
