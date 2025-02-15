@@ -1,0 +1,22 @@
+projectFiles.txt
+
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual Environment
+venv/
+.env
+
+# IDE and Editor files
+*.swp
+*.swo
+*.idea/
+*.vscode/
+
+# Logs
+*.log
+
+# Miscellaneous
+*.DS_Store

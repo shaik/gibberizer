@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gibberizer</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Gibberizer</h1>
+    <form action="/generate" method="POST">
+        <label for="file">Select a source text file:</label>
+        <select name="file" id="file">
+            {% for filename in files %}
+                <option value="{{ filename }}">{{ filename }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="word_count">Number of words to generate:</label>
+        <input type="number" name="word_count" id="word_count" min="1" value="100" required>
+        <br>
+        <input type="submit" value="Generate Gibberish">
+    </form>
+    {% if gibberish %}
+        <h2>Generated Gibberish:</h2>
+        <p>{{ gibberish }}</p>
+    {% endif %}
+</body>
+</html>
