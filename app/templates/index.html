@@ -16,6 +16,12 @@
             {% endfor %}
         </select>
         <br>
+        <label for="algorithm">Select Gibberizer Algorithm:</label>
+        <select name="algorithm" id="algorithm">
+            <option value="random" {% if algorithm == "random" or not algorithm %}selected{% endif %}>Random</option>
+            <option value="semi_random" {% if algorithm == "semi_random" %}selected{% endif %}>Semi Random</option>
+        </select>
+        <br>
         <label for="min_chunk_size">Minimum Chunk Size:</label>
         <input type="number" name="min_chunk_size" id="min_chunk_size" min="2" max="10" value="{{ min_chunk_size or 3 }}" required>
         <br>

@@ -78,13 +78,14 @@ def generate():
     word_count = min(word_count, 1000)
     min_chunk_size = int(request.form.get("min_chunk_size", 3))
     max_chunk_size = int(request.form.get("max_chunk_size", 3))
+    algorithm = request.form.get("algorithm", "random")
 
     if min_chunk_size > max_chunk_size:
         min_chunk_size, max_chunk_size = max_chunk_size, min_chunk_size
 
     reader = get_reader(data_dir=str(Path(current_app.root_path).parent / "data"))
     text = reader.read_text(selected_file)
-    generator = create_generator(min_chunk_size=min_chunk_size, max_chunk_size=max_chunk_size)
+    generator = create_generator(algorithm=algorithm, min_chunk_size=min_chunk_size, max_chunk_size=max_chunk_size)
     gibberish = generator.generate(text)
 
     words = gibberish.split()

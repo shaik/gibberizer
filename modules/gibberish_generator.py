@@ -2,7 +2,11 @@
 Gibberish generator module for processing input text into gibberish output.
 """
 import random
+import logging
 from typing import List, Tuple
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
 
 
 class GibberishGenerator:
@@ -59,6 +63,10 @@ class GibberishGenerator:
         # Split into chunks
         chunks = self._split_into_chunks(text)
         
+        # If randomness is 0.0, return the original text
+        if randomness == 0.0:
+            return self._ensure_sentence_structure(text)
+        
         # Randomly reorder some chunks based on randomness parameter
         num_to_shuffle = int(len(chunks) * randomness)
         if num_to_shuffle > 0:
@@ -74,14 +82,12 @@ class GibberishGenerator:
         return self._ensure_sentence_structure(result)
 
 
-def create_generator(**kwargs) -> GibberishGenerator:
-    """
-    Factory function to create a gibberish generator with specified parameters.
-    
-    Args:
-        **kwargs: Parameters to pass to GibberishGenerator constructor
-    
-    Returns:
-        GibberishGenerator: Configured generator instance
-    """
-    return GibberishGenerator(**kwargs)
+def create_generator(algorithm="random", **kwargs):
+    logging.debug(f"Creating generator with algorithm: {algorithm}")
+    if algorithm == "semi_random":
+        from modules.semi_random_gibberish_generator import SemiRandomGibberishGenerator
+        logging.debug("Created SemiRandomGibberishGenerator.")
+        return SemiRandomGibberishGenerator(**kwargs)
+    else:
+        logging.debug("Created GibberishGenerator.")
+        return GibberishGenerator(**kwargs)
